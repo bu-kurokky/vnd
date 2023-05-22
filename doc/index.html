@@ -1,0 +1,77 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0">
+<meta charset="utf-8">
+<title>よーいDon!</title>
+<style>
+*{font-family: sans-serif;padding:0;margin:0}
+body{font-size:16px}
+main{margin:8px}
+h1,h2{font-size:24px;background:#000;color:#fff;padding:4px;text-align:center;margin:0 0 16px 0}
+h2{margin-top:16px}
+table{margin:8px;width:auto}
+th,td{border:solid 1px #000;width:50vw;height:32px;line-height:32px;padding:4px}td{text-align:right} table{border-collapse:collapse}
+input{height:48px;width:35vw;font-size:16px}
+p{text-align:right}
+</style>
+</head>
+<body>
+<h1>よーいDon!</h1>
+<main>
+<input type="text" pattern="\d*" id="vnd" oninput="changeV2Y()">VND  ⇄  <input type="text" pattern="\d*" id="yen" oninput="changeY2V()">円
+<p>末尾3桁を隠してx6したのが日本円</p>
+</main>
+<h2>早見表</h2>
+<table>
+<tr><th>VND</th><th>円</th></tr>
+<tr><td>20,000</td><td>120</td></tr>
+<tr><td>50,000</td><td>300</td></tr>
+<tr><td>100,000</td><td>600</td></tr>
+<tr><td>200,000</td><td>1,200</td></tr>
+<tr><td>500,000</td><td>3,000</td></tr>
+</table>
+
+
+<script>
+const yen = document.getElementById('yen')
+const vnd = document.getElementById('vnd')
+
+function changeY2V(){
+	if (yen.value === ""){
+		return
+	}
+	const yenNum = yen.value.replace(/[^\d]/g,"")
+	const formatYen = yenNum.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
+	if (formatYen.match(/[^\d]/g)){
+		yen.value = formatYen
+	}
+	const vndNum = yenNum * 170
+	const formatVnd = String(vndNum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
+	if (formatVnd.match(/[^\d]/g)){
+		vnd.value = formatVnd
+	}
+}
+
+function changeV2Y(){
+	if (vnd.value === ""){
+		return
+	}
+	const vndNum = vnd.value.replace(/[^\d]/g,"")
+	const formatVnd = vndNum.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
+	if (formatVnd.match(/[^\d]*/g)){
+		vnd.value = formatVnd
+	}
+	let yenNum = (vndNum / 170).toFixed(2)
+	if (yenNum > 99){
+		yenNum = Math.round(yenNum)
+	}
+	const formatYen = String(yenNum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
+	if (formatYen.match(/[^\d]*/g)){
+		yen.value = formatYen
+	}
+}
+
+
+</script>
+</body>
+</html>

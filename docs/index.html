@@ -24,16 +24,16 @@ p{text-align:right}
 <h1>よーいDon!</h1>
 <main>
 <input type="text" pattern="\d*" id="vnd" oninput="changeV2Y()">VND  ⇄  <input type="text" pattern="\d*" id="yen" oninput="changeY2V()">円
-<p>末尾3桁を隠してx6したのが日本円</p>
+<p>末尾3桁を隠してx6したのが大体の日本円</p>
 </main>
 <h2>早見表</h2>
 <table>
 <tr><th>VND</th><th>円</th></tr>
-<tr><td>20,000</td><td>120</td></tr>
-<tr><td>50,000</td><td>300</td></tr>
-<tr><td>100,000</td><td>600</td></tr>
-<tr><td>200,000</td><td>1,200</td></tr>
-<tr><td>500,000</td><td>3,000</td></tr>
+<tr><td>20,000</td><td>122</td></tr>
+<tr><td>50,000</td><td>305</td></tr>
+<tr><td>100,000</td><td>610</td></tr>
+<tr><td>200,000</td><td>1,220</td></tr>
+<tr><td>500,000</td><td>3,050</td></tr>
 </table>
 
 
@@ -50,7 +50,14 @@ function changeY2V(){
 	if (formatYen.match(/[^\d]/g)){
 		yen.value = formatYen
 	}
-	const vndNum = yenNum * 170
+
+	let vndNum = yenNum * 164
+	
+	if (vndNum > 10000){
+		const matsubi = String(vndNum).replace(/.\d+(\d)$/,'$1')
+		vndNum = vndNum - parseInt(matsubi)
+	}
+
 	const formatVnd = String(vndNum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
 	if (formatVnd.match(/[^\d]/g)){
 		vnd.value = formatVnd
@@ -66,10 +73,12 @@ function changeV2Y(){
 	if (formatVnd.match(/[^\d]*/g)){
 		vnd.value = formatVnd
 	}
-	let yenNum = (vndNum / 170).toFixed(2)
-	if (yenNum > 99){
+
+
+	let yenNum = (vndNum / 164).toFixed(2)
+	//if (yenNum > 99){
 		yenNum = Math.round(yenNum)
-	}
+	//}
 	const formatYen = String(yenNum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
 	if (formatYen.match(/[^\d]*/g)){
 		yen.value = formatYen
